@@ -1,3 +1,6 @@
+/* UVM PC 19/nov/2025
+    Dejar que el usuario decida cuántos gusanos crea. Los gusanos mueren cuando todo el jardin está caminado o comido*/
+
 import java.util.Scanner;
 
 public class Main {
