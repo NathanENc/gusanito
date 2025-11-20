@@ -1,11 +1,13 @@
-
 public class HiloGusano extends Thread {
     private char[][] jardin;
     private int filas;
     private int columnas;
-
-    public HiloGusano(char[][] mundo) {
+    private int tiempoEspera; 
+    
+    
+    public HiloGusano(char[][] mundo, int velocidad) {
         this.jardin = mundo;
+        this.tiempoEspera = velocidad;
         if (mundo != null && mundo.length > 0) {
             this.filas = jardin.length;
             this.columnas = jardin[0].length;
@@ -14,7 +16,7 @@ public class HiloGusano extends Thread {
             this.columnas = 0;
         }
     }
-    
+
     private boolean quedaJardin() {
         synchronized (jardin) {
             for (int r = 0; r < filas; r++) {
@@ -25,14 +27,13 @@ public class HiloGusano extends Thread {
                 }
             }
         }
-        return false; 
+        return false;
     }
 
     public void caminaRenglon(int r) {
         if (r >= 0 && r < filas) {
             for (int x = 0; x < columnas; x++) {
-
-                jardin[r][x] = 'W'; 
+                jardin[r][x] = 'W';
             }
         }
     }
@@ -65,9 +66,7 @@ public class HiloGusano extends Thread {
 
     @Override
     public void run() {
-
-        int ini = (int) (Math.random() * 100); 
-
+        int ini = (int) (Math.random() * 100);
 
         while (quedaJardin()) {
             try {
@@ -77,7 +76,7 @@ public class HiloGusano extends Thread {
                     ini++;
                 }
 
-                sleep(1000);
+                sleep(tiempoEspera);
 
                 int renglonActual = ini % filas;
                 int tragaRenglon = 3;
@@ -86,7 +85,8 @@ public class HiloGusano extends Thread {
                     comerRenglon(renglonActual, tragaRenglon);
                     ini++;
                 }
-                sleep(600);
+              
+                sleep(tiempoEspera);
 
             } catch (InterruptedException e) {
                 System.out.println("Interrupcion");
@@ -94,6 +94,11 @@ public class HiloGusano extends Thread {
                 return;
             }
         }
+        System.out.println("Gusano finalizado.");
+    }
+}
+        }
         System.out.println("Un gusano ha terminado su trabajo (murió).");
     }
 }
+
